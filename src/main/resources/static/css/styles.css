@@ -1,0 +1,212 @@
+/* src/main/resources/static/css/style.css */
+
+:root {
+    --primary-color: #2E7D32;       /* Forest Green */
+    --primary-hover: #1B5E20;
+    --bg-color: #F5F7F5;            /* Light Grayish Green */
+    --surface-color: #FFFFFF;
+    --text-main: #333333;
+    --text-secondary: #555555;
+    --border-radius-card: 20px;
+    --border-radius-btn: 50px;
+}
+
+/* --- Общие стили --- */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+}
+
+/* Стили для основных страниц (Абоненты, Услуги...) */
+body.dashboard-page {
+    padding-top: 80px; /* Отступ под фиксированное меню */
+}
+
+/* Стили для страниц входа, регистрации и ошибок (по центру экрана) */
+body.centered-page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Навигация (Navbar) --- */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Плашка пользователя в меню */
+.user-pill {
+    background-color: #F1F3F4;
+    transition: background 0.2s;
+    cursor: default;
+}
+
+.user-pill:hover {
+    background-color: #E0E2E4;
+}
+
+/* --- Карточки (Cards) --- */
+.card {
+    border: none;
+    border-radius: var(--border-radius-card);
+    background-color: var(--surface-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    overflow: hidden;
+}
+
+/* Карточки для логина/регистрации (более выраженная тень) */
+.auth-card {
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    width: 100%;
+    max-width: 400px;
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid #F0F0F0;
+    padding: 20px 24px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* --- Кнопки (Buttons) --- */
+.btn {
+    border-radius: var(--border-radius-btn);
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 8px 24px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Кнопка "Войти/Регистрация" (второстепенная) */
+.btn-outline-secondary {
+    color: #555;
+    border-color: #ddd;
+    margin-top: 10px;
+    width: 100%; /* Для форм входа */
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #333;
+    border-color: #ccc;
+}
+
+/* Кнопка "Оплатить" */
+.btn-pay {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50px;
+    padding: 6px 20px;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.btn-pay:hover {
+    background-color: var(--primary-hover);
+    color: white;
+}
+
+/* Текстовые ссылки-кнопки */
+.btn-text {
+    color: #666;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+.btn-text:hover { color: #333; }
+
+
+/* --- Таблицы (Tables) --- */
+.table thead th {
+    background-color: #FAFAFA;
+    border-bottom: 2px solid #EEE;
+    color: #666;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.badge-status {
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* --- Формы (Forms) --- */
+.form-control, .form-select {
+    border-radius: 8px;
+}
+
+/* Кастомный стиль для полей Material Design (Floating labels) */
+.form-floating > .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+.form-floating > .form-control:focus ~ label {
+    color: var(--primary-color);
+}
+
+/* Детали абонента: списки */
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #F5F5F5;
+    padding: 15px 0;
+}
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* Разделитель "ИЛИ" на формах входа */
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    color: #aaa;
+    font-size: 0.85rem;
+}
+.auth-divider::before, .auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #eee;
+}
+.auth-divider::before { margin-right: .5em; }
+.auth-divider::after { margin-left: .5em; }
+
+/* Иконки ошибок */
+.error-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}

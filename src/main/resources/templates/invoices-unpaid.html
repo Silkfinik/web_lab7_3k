@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Должники</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="dashboard-page">
+
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/DemoSpring/subscribers" style="color: var(--primary-color);">
+            <span class="material-icons-round me-2">eco</span> DemoSpring
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/DemoSpring/subscribers">Абоненты</a></li>
+                <li class="nav-item"><a class="nav-link" href="/DemoSpring/services">Услуги</a></li>
+                <li class="nav-item" th:if="${session.user != null and session.user.role.name() == 'ADMIN'}">
+                    <a class="nav-link active fw-bold text-danger" href="/DemoSpring/invoices/unpaid">Должники</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto" th:if="${session.user != null}">
+                <li class="nav-item d-flex align-items-center user-pill rounded-pill px-3 py-1">
+                    <span class="material-icons-round text-secondary fs-5 me-2">account_circle</span>
+                    <span class="fw-bold small text-dark me-3" th:text="${session.user.login}">Login</span>
+                    <a href="/DemoSpring/logout" class="text-danger d-flex align-items-center text-decoration-none"><span class="material-icons-round fs-5">logout</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="d-flex align-items-center mb-4 text-danger">
+        <span class="material-icons-round me-2 fs-2">warning</span>
+        <h1 class="h3 fw-bold mb-0">Неоплаченные счета</h1>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="bg-light">
+                <tr>
+                    <th class="ps-4">ID</th>
+                    <th>Абонент</th>
+                    <th>Дата</th>
+                    <th>Сумма</th>
+                    <th class="text-end pe-4">Действие</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="inv : ${invoices}">
+                    <td class="ps-4 text-muted" th:text="${inv.id}">1</td>
+                    <td>
+                        <a th:href="@{/subscribers/{id}(id=${inv.subscriber.id})}"
+                           class="text-decoration-none fw-bold text-dark d-flex align-items-center">
+                            <span class="material-icons-round me-2 text-secondary fs-6">person</span>
+                            <span th:text="${inv.subscriber.name}">Имя</span>
+                        </a>
+                    </td>
+                    <td th:text="${inv.issueDate}" class="text-secondary"></td>
+                    <td class="fw-bold text-danger" th:text="${inv.amount} + ' ₽'"></td>
+                    <td class="text-end pe-4">
+                        <form th:action="@{/invoices/{id}/pay(id=${inv.id})}" method="post">
+                            <button type="submit" class="btn-pay shadow-sm">
+                                Оплатить
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(invoices)}">
+                    <td colspan="5" class="text-center py-5">
+                        <span class="material-icons-round text-success fs-1 mb-2 opacity-50">check_circle</span>
+                        <p class="text-muted small">Все счета оплачены! Задолженностей нет.</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
