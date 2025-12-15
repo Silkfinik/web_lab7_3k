@@ -8,6 +8,10 @@ import org.example.service.DataInitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -23,9 +27,16 @@ public class SubscriberController {
     private DataInitService dataInitService;
 
     @GetMapping("/subscribers")
-    public String getAllSubscribers(Model model) {
-        Iterable<Subscriber> subscribers = subscriberRepository.findAll();
-        model.addAttribute("subscribers", subscribers);
+    public String getAllSubscribers(@RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "5") int size,
+                                    Model model) {
+
+        Pageable paging = PageRequest.of(page, size, Sort.by("id"));
+
+        Page<Subscriber> subscriberPage = subscriberRepository.findAll(paging);
+
+        model.addAttribute("subscribers", subscriberPage);
+
         return "subscribers";
     }
 

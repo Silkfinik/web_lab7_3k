@@ -1,0 +1,316 @@
+/* src/main/resources/static/css/styles.css */
+
+:root {
+    --primary-color: #2E7D32;       /* Forest Green */
+    --primary-hover: #1B5E20;
+    --bg-color: #F5F7F5;            /* Light Grayish Green */
+    --surface-color: #FFFFFF;
+    --text-main: #333333;
+    --text-secondary: #555555;
+    --border-radius-card: 20px;
+    --border-radius-btn: 50px;
+}
+
+/* --- Общие стили --- */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+}
+
+body.dashboard-page {
+    padding-top: 80px;
+}
+
+body.centered-page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Навигация (Navbar) --- */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+.user-pill {
+    background-color: #F1F3F4;
+    transition: background 0.2s;
+    cursor: default;
+}
+.user-pill:hover {
+    background-color: #E0E2E4;
+}
+
+/* Переключатель языков */
+.lang-switcher a {
+    color: #888;
+    transition: color 0.2s;
+}
+.lang-switcher a:hover {
+    color: var(--primary-color);
+}
+
+/* --- Карточки --- */
+.card {
+    border: none;
+    border-radius: var(--border-radius-card);
+    background-color: var(--surface-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    overflow: hidden;
+}
+
+.auth-card {
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    width: 100%;
+    max-width: 400px;
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid #F0F0F0;
+    padding: 20px 24px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* --- Кнопки --- */
+.btn {
+    border-radius: var(--border-radius-btn);
+    font-weight: 500;
+    padding: 8px 24px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+}
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-outline-secondary {
+    border-color: #ddd;
+    color: #555;
+}
+.btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #333;
+    border-color: #ccc;
+}
+
+/* Кнопка "Оплатить" */
+.btn-pay {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50px;
+    padding: 6px 20px;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.btn-pay:hover {
+    background-color: var(--primary-hover);
+    color: white;
+}
+
+/* Кнопка действия (иконка) в таблице */
+.btn-icon-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #757575;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.btn-icon-action:hover {
+    background-color: #fee2e2; /* Light Red */
+    color: #d32f2f;
+}
+
+/* Кнопка Сброса БД */
+.btn-reset-db {
+    border: 1px solid #ffcdd2;
+    background-color: #ffebee; /* Very light red */
+    color: #c62828;
+    padding: 10px 30px;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+}
+.btn-reset-db:hover {
+    background-color: #ffcdd2;
+    color: #b71c1c;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* --- Таблицы --- */
+.table thead th {
+    background-color: #FAFAFA;
+    border-bottom: 2px solid #EEE;
+    color: #666;
+    font-weight: 600;
+    font-size: 0.75rem; /* Чуть меньше шрифт заголовков */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.table tbody td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.badge-status {
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* --- Пагинация (Pagination) --- */
+.pagination .page-link {
+    color: var(--primary-color);
+    border: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important; /* Круглые кнопки */
+    margin: 0 3px;
+    font-weight: 500;
+}
+
+.pagination .page-link:hover {
+    background-color: #E8F5E9; /* Light Green */
+    color: var(--primary-hover);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 5px rgba(46, 125, 50, 0.3);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #ccc;
+    background: transparent;
+}
+
+/* --- Формы --- */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+}
+
+.form-floating > .form-control:focus ~ label {
+    color: var(--primary-color);
+}
+
+.list-group-item {
+    border: none;
+    border-bottom: 1px solid #F5F5F5;
+    padding: 15px 0;
+}
+
+.auth-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    color: #aaa;
+    font-size: 0.85rem;
+}
+.auth-divider::before, .auth-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #eee;
+}
+.auth-divider::before { margin-right: .5em; }
+.auth-divider::after { margin-left: .5em; }
+
+.error-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.auth-card .btn-primary {
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.2); /* Тень для объема */
+}
+
+/* Кнопка "Зарегистрироваться" (второстепенная) */
+.auth-card .btn-outline-secondary {
+    border-radius: var(--border-radius-btn);
+    padding: 10px;
+    font-size: 0.95rem;
+    border: 1px solid #e0e0e0;
+    color: #666;
+    background-color: transparent;
+    transition: all 0.2s;
+}
+
+.auth-card .btn-outline-secondary:hover {
+    background-color: #f5f5f5;
+    color: #333;
+    border-color: #bdbdbd;
+    box-shadow: none;
+    transform: translateY(-1px);
+}
+
+/* Разделитель "или" */
+.auth-divider {
+    color: #999;
+    font-size: 0.8rem;
+    margin: 25px 0; /* Больше воздуха */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Переключатель языков в формах входа */
+.auth-lang-switcher {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+.auth-lang-switcher a {
+    color: #adb5bd;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    transition: color 0.2s;
+}
+.auth-lang-switcher a:hover {
+    color: var(--primary-color);
+}

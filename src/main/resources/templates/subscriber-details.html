@@ -1,46 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Профиль абонента</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+
+<head th:replace="~{fragments/head :: common_head(#{details.title})}"></head>
+
 <body class="dashboard-page">
 
-<nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="/DemoSpring/subscribers" style="color: var(--primary-color);">
-            <span class="material-icons-round me-2">eco</span> DemoSpring
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="/DemoSpring/subscribers">Абоненты</a></li>
-                <li class="nav-item"><a class="nav-link" href="/DemoSpring/services">Услуги</a></li>
-                <li class="nav-item" th:if="${session.user != null and session.user.role.name() == 'ADMIN'}">
-                    <a class="nav-link" href="/DemoSpring/invoices/unpaid">Должники</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-auto" th:if="${session.user != null}">
-                <li class="nav-item d-flex align-items-center user-pill rounded-pill px-3 py-1">
-                    <span class="material-icons-round text-secondary fs-5 me-2">account_circle</span>
-                    <span class="fw-bold small text-dark me-3" th:text="${session.user.login}">Login</span>
-                    <a href="/DemoSpring/logout" class="text-danger d-flex align-items-center text-decoration-none"><span class="material-icons-round fs-5">logout</span></a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<nav th:replace="~{fragments/header :: header('subscribers')}"></nav>
 
 <div class="container mt-4">
     <a href="/DemoSpring/subscribers" class="text-decoration-none text-secondary d-flex align-items-center mb-3 small fw-bold">
-        <span class="material-icons-round me-1 fs-6">arrow_back</span> ВЕРНУТЬСЯ К СПИСКУ
+        <span class="material-icons-round me-1 fs-6">arrow_back</span> <span th:text="#{details.back}">ВЕРНУТЬСЯ К СПИСКУ</span>
     </a>
 
     <div class="card mb-4">
@@ -62,11 +31,11 @@
                 </div>
                 <div class="col-md-4 text-md-end mt-3 mt-md-0">
                     <div class="h3 fw-bold mb-1"
-                         th:text="${subscriber.balance} + ' ₽'"
+                         th:text="${subscriber.balance} + ' ' + #{services.fee.currency}"
                          th:classappend="${subscriber.balance < 0} ? 'text-danger' : 'text-success'"></div>
                     <div>
-                        <span th:if="${subscriber.isBlocked}" class="badge bg-danger">Заблокирован</span>
-                        <span th:unless="${subscriber.isBlocked}" class="badge bg-success">Активен</span>
+                        <span th:if="${subscriber.isBlocked}" class="badge bg-danger" th:text="#{status.blocked}">Заблокирован</span>
+                        <span th:unless="${subscriber.isBlocked}" class="badge bg-success" th:text="#{status.active}">Активен</span>
                     </div>
                 </div>
             </div>
@@ -77,24 +46,24 @@
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <span>Подключенные услуги</span>
+                    <span th:text="#{details.services}">Подключенные услуги</span>
                     <span class="material-icons-round text-secondary">router</span>
                 </div>
                 <div class="card-body p-4 d-flex flex-column">
                     <ul class="list-group mb-4 flex-grow-1" th:if="${not #lists.isEmpty(subscriber.services)}">
                         <li class="list-group-item d-flex justify-content-between align-items-center" th:each="service : ${subscriber.services}">
                             <span th:text="${service.name}" class="text-dark">Название</span>
-                            <span class="fw-bold text-secondary" th:text="${service.monthlyFee} + ' ₽'"></span>
+                            <span class="fw-bold text-secondary" th:text="${service.monthlyFee} + ' ' + #{services.fee.currency}"></span>
                         </li>
                     </ul>
-                    <p th:if="${#lists.isEmpty(subscriber.services)}" class="text-muted small text-center my-4">Список услуг пуст</p>
+                    <p th:if="${#lists.isEmpty(subscriber.services)}" class="text-muted small text-center my-4" th:text="#{details.services.empty}">Список услуг пуст</p>
 
                     <form th:if="${session.user.role.name() == 'ADMIN'}"
                           th:action="@{/subscribers/{id}/services(id=${subscriber.id})}" method="post" class="mt-auto">
-                        <label class="form-label small text-muted">Добавить услугу:</label>
+                        <label class="form-label small text-muted" th:text="#{details.services.add}">Добавить услугу:</label>
                         <div class="input-group">
                             <select name="serviceId" class="form-select bg-light border-0">
-                                <option th:each="srv : ${allServices}" th:value="${srv.id}" th:text="${srv.name} + ' (' + ${srv.monthlyFee} + ' ₽)'"></option>
+                                <option th:each="srv : ${allServices}" th:value="${srv.id}" th:text="${srv.name} + ' (' + ${srv.monthlyFee} + ' ' + #{services.fee.currency} + ')'"></option>
                             </select>
                             <button type="submit" class="btn btn-primary px-3">
                                 <span class="material-icons-round">add</span>
@@ -108,16 +77,16 @@
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <span>Счета и оплата</span>
+                    <span th:text="#{details.invoices}">Счета и оплата</span>
                     <span class="material-icons-round text-secondary">receipt</span>
                 </div>
                 <div class="card-body p-4">
                     <form th:if="${session.user.role.name() == 'ADMIN'}"
                           th:action="@{/subscribers/{id}/invoices(id=${subscriber.id})}" method="post" class="mb-4">
-                        <label class="form-label small text-muted">Выставить новый счет:</label>
+                        <label class="form-label small text-muted" th:text="#{details.invoices.new}">Выставить новый счет:</label>
                         <div class="input-group">
-                            <input type="number" step="0.01" name="amount" class="form-control bg-light border-0" placeholder="Сумма (₽)" required>
-                            <button class="btn btn-outline-secondary" type="submit">Создать</button>
+                            <input type="number" step="0.01" name="amount" class="form-control bg-light border-0" th:placeholder="#{details.invoices.placeholder}" required>
+                            <button class="btn btn-outline-secondary" type="submit" th:text="#{button.create}">Создать</button>
                         </div>
                     </form>
 
@@ -125,9 +94,9 @@
                         <table class="table table-sm table-borderless align-middle mb-0">
                             <thead class="text-muted border-bottom small">
                             <tr>
-                                <th>Дата</th>
-                                <th>Сумма</th>
-                                <th>Статус</th>
+                                <th th:text="#{details.invoices.date}">Дата</th>
+                                <th th:text="#{details.invoices.amount}">Сумма</th>
+                                <th th:text="#{details.invoices.status}">Статус</th>
                                 <th th:if="${session.user.role.name() == 'ADMIN'}"></th>
                             </tr>
                             </thead>
@@ -136,12 +105,12 @@
                                 <td th:text="${inv.issueDate}" class="text-secondary small"></td>
                                 <td class="fw-bold" th:text="${inv.amount}"></td>
                                 <td>
-                                    <span th:if="${inv.isPaid}" class="text-success small fw-bold">Оплачен</span>
-                                    <span th:unless="${inv.isPaid}" class="text-danger small fw-bold">Долг</span>
+                                    <span th:if="${inv.isPaid}" class="text-success small fw-bold" th:text="#{status.paid}">Оплачен</span>
+                                    <span th:unless="${inv.isPaid}" class="text-danger small fw-bold" th:text="#{status.debt}">Долг</span>
                                 </td>
                                 <td class="text-end" th:if="${session.user.role.name() == 'ADMIN'}">
                                     <form th:unless="${inv.isPaid}" th:action="@{/invoices/{id}/pay(id=${inv.id})}" method="post">
-                                        <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-3" style="font-size: 0.75rem;">Оплатить</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-3" style="font-size: 0.75rem;" th:text="#{button.pay}">Оплатить</button>
                                     </form>
                                 </td>
                             </tr>

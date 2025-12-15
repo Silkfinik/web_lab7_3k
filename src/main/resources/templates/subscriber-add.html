@@ -1,48 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Новый абонент</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+
+<head th:replace="~{fragments/head :: common_head(#{add.subscriber.title})}"></head>
+
 <body class="dashboard-page">
 
-<nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center" href="/DemoSpring/subscribers" style="color: var(--primary-color);">
-            <span class="material-icons-round me-2">eco</span> DemoSpring
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link active" href="/DemoSpring/subscribers">Абоненты</a></li>
-                <li class="nav-item"><a class="nav-link" href="/DemoSpring/services">Услуги</a></li>
-                <li class="nav-item" th:if="${session.user != null and session.user.role.name() == 'ADMIN'}">
-                    <a class="nav-link" href="/DemoSpring/invoices/unpaid">Должники</a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav ms-auto" th:if="${session.user != null}">
-                <li class="nav-item d-flex align-items-center user-pill rounded-pill px-3 py-1">
-                    <span class="material-icons-round text-secondary fs-5 me-2">account_circle</span>
-                    <div class="d-flex flex-column me-3" style="line-height: 1.1;">
-                        <span class="fw-bold small text-dark" th:text="${session.user.login}">Login</span>
-                        <span class="text-muted" style="font-size: 0.65rem; text-transform: uppercase;" th:text="${session.user.role}">ROLE</span>
-                    </div>
-                    <a href="/DemoSpring/logout" class="text-danger d-flex align-items-center text-decoration-none" title="Выйти">
-                        <span class="material-icons-round fs-5">logout</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<nav th:replace="~{fragments/header :: header('subscribers')}"></nav>
 
 <div class="container mt-5">
     <div class="card auth-card p-4 mx-auto" style="max-width: 500px;">
@@ -51,29 +14,29 @@
                 <div class="mb-3 text-success">
                     <span class="material-icons-round" style="font-size: 48px;">person_add</span>
                 </div>
-                <h4 class="fw-bold">Новый абонент</h4>
+                <h4 class="fw-bold" th:text="#{add.subscriber.header}">Новый абонент</h4>
             </div>
 
             <form th:action="@{/subscribers/add}" th:object="${subscriber}" method="post">
 
                 <div class="form-floating mb-3">
                     <input type="text" th:field="*{name}" class="form-control" id="nameInput" placeholder="Имя" required />
-                    <label for="nameInput">ФИО</label>
+                    <label for="nameInput" th:text="#{add.subscriber.name}">ФИО</label>
                 </div>
 
                 <div class="form-floating mb-3">
                     <input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneInput" placeholder="Телефон" required />
-                    <label for="phoneInput">Номер телефона</label>
+                    <label for="phoneInput" th:text="#{add.subscriber.phone}">Номер телефона</label>
                 </div>
 
                 <div class="form-floating mb-4">
                     <input type="number" step="0.01" th:field="*{balance}" class="form-control" id="balanceInput" placeholder="Баланс" />
-                    <label for="balanceInput">Начальный баланс (₽)</label>
+                    <label for="balanceInput" th:text="#{add.subscriber.balance}">Начальный баланс</label>
                 </div>
 
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Создать</button>
-                    <a href="/DemoSpring/subscribers" class="btn btn-outline-secondary mt-0" style="border: none;">Отмена</a>
+                    <button type="submit" class="btn btn-primary" th:text="#{button.create}">Создать</button>
+                    <a href="/DemoSpring/subscribers" class="btn btn-outline-secondary mt-0" style="border: none;" th:text="#{button.cancel}">Отмена</a>
                 </div>
             </form>
         </div>

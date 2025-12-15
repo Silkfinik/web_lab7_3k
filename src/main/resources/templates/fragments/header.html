@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="header(activeTab)" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/DemoSpring/subscribers" style="color: var(--primary-color);">
+            <span class="material-icons-round me-2">eco</span>
+            <span th:text="#{app.name}">DemoSpring</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/DemoSpring/subscribers"
+                       th:classappend="${activeTab == 'subscribers' ? 'active' : ''}"
+                       th:text="#{menu.subscribers}">Абоненты</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/DemoSpring/services"
+                       th:classappend="${activeTab == 'services' ? 'active' : ''}"
+                       th:text="#{menu.services}">Услуги</a>
+                </li>
+                <li class="nav-item" th:if="${session.user != null and session.user.role.name() == 'ADMIN'}">
+                    <a class="nav-link" href="/DemoSpring/invoices/unpaid"
+                       th:classappend="${activeTab == 'debtors' ? 'active text-danger fw-bold' : ''}"
+                       th:text="#{menu.debtors}">Должники</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ms-auto align-items-center" th:if="${session.user != null}">
+                <li th:replace="~{fragments/lang :: switcher_nav}"></li>
+
+                <li class="nav-item d-flex align-items-center user-pill rounded-pill px-3 py-1">
+                    <span class="material-icons-round text-secondary fs-5 me-2">account_circle</span>
+                    <div class="d-flex flex-column me-3" style="line-height: 1.1;">
+                        <span class="fw-bold small text-dark" th:text="${session.user.login}">Login</span>
+                        <span class="text-muted" style="font-size: 0.65rem; text-transform: uppercase;" th:text="${session.user.role}">ROLE</span>
+                    </div>
+                    <a href="/DemoSpring/logout" class="text-danger d-flex align-items-center text-decoration-none" th:title="#{menu.logout}">
+                        <span class="material-icons-round fs-5">logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

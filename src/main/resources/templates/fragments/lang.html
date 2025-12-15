@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<li th:fragment="switcher_nav" class="nav-item me-3 d-flex align-items-center lang-switcher">
+    <a class="nav-link p-1 fw-bold small" th:href="@{''(lang='ru')}">RU</a>
+    <span class="text-secondary mx-1 opacity-25">|</span>
+    <a class="nav-link p-1 fw-bold small" th:href="@{''(lang='en')}">EN</a>
+    <span class="text-secondary mx-1 opacity-25">|</span>
+    <a class="nav-link p-1 fw-bold small" th:href="@{''(lang='de')}">DE</a>
+</li>
+
+<div th:fragment="switcher_auth" class="text-center d-flex justify-content-center auth-lang-switcher">
+    <a th:href="@{''(lang='ru')}" class="text-decoration-none">RU</a>
+    <a th:href="@{''(lang='en')}" class="text-decoration-none">EN</a>
+    <a th:href="@{''(lang='de')}" class="text-decoration-none">DE</a>
+</div>
+
+</body>
+</html>
