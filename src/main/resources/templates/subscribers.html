@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="~{fragments/head :: common_head(#{subscribers.title})}"></head>
-
 <body class="dashboard-page">
 
 <nav th:replace="~{fragments/header :: header('subscribers')}"></nav>
@@ -64,26 +62,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-center mt-4" th:if="${subscribers.totalPages > 0}">
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item" th:classappend="${subscribers.first} ? 'disabled'">
-                    <a class="page-link" th:href="@{/subscribers(page=${subscribers.number - 1})}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, subscribers.totalPages - 1)}"
-                    th:classappend="${subscribers.number == i} ? 'active'">
-                    <a class="page-link" th:href="@{/subscribers(page=${i})}" th:text="${i + 1}">1</a>
-                </li>
-                <li class="page-item" th:classappend="${subscribers.last} ? 'disabled'">
-                    <a class="page-link" th:href="@{/subscribers(page=${subscribers.number + 1})}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <div th:replace="~{fragments/pagination :: controls(${subscribers}, '/subscribers')}"></div>
 
     <div class="text-center mt-5 mb-5" th:if="${session.user.role.name() == 'ADMIN'}">
         <form th:action="@{/reset-db}" method="post">

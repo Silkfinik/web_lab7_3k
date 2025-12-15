@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 @org.springframework.stereotype.Service
 public class DataInitService {
@@ -35,28 +37,48 @@ public class DataInitService {
         subscriberRepository.deleteAll();
         serviceRepository.deleteAll();
 
+        entityManager.createNativeQuery("ALTER TABLE invoices AUTO_INCREMENT = 1").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE subscriber_services AUTO_INCREMENT = 1").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE subscribers AUTO_INCREMENT = 1").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE services AUTO_INCREMENT = 1").executeUpdate();
+
         entityManager.flush();
 
-        Service serv1 = new Service("Интернет 50 Мбит/с", 450.00);
-        Service serv2 = new Service("Мобильная связь", 300.00);
-        Service serv3 = new Service("Антивирус", 100.00);
+        Service serv1 = new Service("Интернет 100 Мбит/с", 550.00);
+        Service serv2 = new Service("Мобильная связь", 350.00);
+        Service serv3 = new Service("Антивирус PRO", 120.00);
+        Service serv4 = new Service("IP-TV (150 каналов)", 290.00);
+        Service serv5 = new Service("Статический IP", 150.00);
 
-        serviceRepository.saveAll(Arrays.asList(serv1, serv2, serv3));
+        List<Service> allServices = Arrays.asList(serv1, serv2, serv3, serv4, serv5);
+        serviceRepository.saveAll(allServices);
 
-        Subscriber sub1 = new Subscriber("Иван Иванов", "+375291234567", 150.50, false);
-        Subscriber sub2 = new Subscriber("Петр Петров", "+375337654321", -50.00, true);
+        Random random = new Random();
+        String[] firstNames = {"Иван", "Петр", "Алексей", "Дмитрий", "Сергей", "Андрей", "Михаил", "Николай", "Егор", "Максим", "Ольга", "Анна", "Елена", "Мария", "Светлана"};
+        String[] lastNames = {"Иванов", "Петров", "Сидоров", "Смирнов", "Кузнецов", "Попов", "Васильев", "Соколов", "Михайлов", "Новиков", "Федоров", "Морозов"};
 
-        sub1.getServices().add(serv1);
-        sub1.getServices().add(serv2);
+        for (int i = 0; i < 50; i++) {
+            String name = firstNames[random.nextInt(firstNames.length)] + " " + lastNames[random.nextInt(lastNames.length)];
+            String phone = "+79" + String.format("%09d", random.nextInt(1_000_000_000));
 
-        sub2.getServices().add(serv2);
-        sub2.getServices().add(serv3);
+            double balance = Math.round((random.nextDouble() * 2500 - 500) * 100.0) / 100.0;
 
-        subscriberRepository.saveAll(Arrays.asList(sub1, sub2));
+            boolean isBlocked = random.nextInt(10) == 0;
 
-        Invoice inv1 = new Invoice(750.00, LocalDate.parse("2025-09-01"), true, sub1);
-        Invoice inv2 = new Invoice(400.00, LocalDate.parse("2025-09-05"), false, sub2);
+            Subscriber sub = new Subscriber(name, phone, balance, isBlocked);
 
-        invoiceRepository.saveAll(Arrays.asList(inv1, inv2));
+            int servicesCount = random.nextInt(4);
+            for (int j = 0; j < servicesCount; j++) {
+                sub.getServices().add(allServices.get(random.nextInt(allServices.size())));
+            }
+
+            subscriberRepository.save(sub);
+
+            if (random.nextInt(5) == 0) {
+                double amount = Math.round((random.nextDouble() * 1000 + 100) * 100.0) / 100.0;
+                Invoice invoice = new Invoice(amount, LocalDate.now().minusDays(random.nextInt(30)), false, sub);
+                invoiceRepository.save(invoice);
+            }
+        }
     }
 }

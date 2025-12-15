@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="~{fragments/head :: common_head(#{debtors.title})}"></head>
-
 <body class="dashboard-page">
 
 <nav th:replace="~{fragments/header :: header('debtors')}"></nav>
@@ -26,7 +24,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="inv : ${invoices}">
+                <tr th:each="inv : ${invoices.content}">
                     <td class="ps-4 text-muted" th:text="${inv.id}">1</td>
                     <td>
                         <a th:href="@{/subscribers/{id}(id=${inv.subscriber.id})}"
@@ -45,7 +43,7 @@
                         </form>
                     </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(invoices)}">
+                <tr th:if="${invoices.totalElements == 0}">
                     <td colspan="5" class="text-center py-5">
                         <span class="material-icons-round text-success fs-1 mb-2 opacity-50">check_circle</span>
                         <p class="text-muted small" th:text="#{debtors.empty}">Все счета оплачены! Задолженностей нет.</p>
@@ -55,6 +53,8 @@
             </table>
         </div>
     </div>
+
+    <div th:replace="~{fragments/pagination :: controls(${invoices}, '/invoices/unpaid')}"></div>
 </div>
 </body>
 </html>

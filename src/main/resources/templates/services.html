@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-
 <head th:replace="~{fragments/head :: common_head(#{services.title})}"></head>
-
 <body class="dashboard-page">
 
 <nav th:replace="~{fragments/header :: header('services')}"></nav>
@@ -30,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="service : ${services}">
+                <tr th:each="service : ${services.content}">
                     <td class="ps-4 text-muted" th:text="${service.id}"></td>
                     <td class="fw-bold text-dark" th:text="${service.name}"></td>
                     <td>
@@ -42,6 +39,8 @@
             </table>
         </div>
     </div>
+
+    <div th:replace="~{fragments/pagination :: controls(${services}, '/services')}"></div>
 </div>
 </body>
 </html>

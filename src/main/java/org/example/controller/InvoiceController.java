@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 
@@ -24,8 +28,13 @@ public class InvoiceController {
     private SubscriberRepository subscriberRepository;
 
     @GetMapping("/invoices/unpaid")
-    public String getUnpaidInvoices(Model model) {
-        model.addAttribute("invoices", invoiceRepository.findByIsPaidFalse());
+    public String getUnpaidInvoices(@RequestParam(defaultValue = "0") int page,
+                                    Model model) {
+        Pageable paging = PageRequest.of(page, 5, Sort.by("id").descending());
+
+        Page<Invoice> invoicesPage = invoiceRepository.findByIsPaidFalse(paging);
+
+        model.addAttribute("invoices", invoicesPage);
         return "invoices-unpaid";
     }
 
