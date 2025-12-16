@@ -1,6 +1,9 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -11,11 +14,14 @@ public class Service {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private int id;
 
+    @JsonProperty("description")
     @Column(unique = true)
     private String name;
 
+    @JsonProperty("price")
     @Column(name = "monthly_fee")
     private double monthlyFee;
 
@@ -23,6 +29,7 @@ public class Service {
             mappedBy = "services",
             fetch = FetchType.LAZY
     )
+    @JsonIgnore
     private Set<Subscriber> subscribers = new HashSet<>();
 
     // --- Конструкторы ---
